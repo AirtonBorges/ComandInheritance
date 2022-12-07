@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ComandInheritance.Models
 {
-    public class Comando : IComando
+    public abstract class Comando
     {
-        public string Mensagem { get; set; }
+        public required string Texto { get; set; }
+
+        public abstract Task<bool> Executar(IServiceProvider pServiceProvider);
     }
 }

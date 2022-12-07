@@ -26,7 +26,7 @@ namespace ComandInheritance.Workers
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     Console.Write("Insira comando: ");
-                    string xArgs = Console.ReadLine();
+                    var xArgs = Console.ReadLine();
 
                     var xComando = _comandoService.ObterComando<Comando>(xArgs);
                     var xExecutou = _comandoService.ExecutarComando(xComando);
@@ -38,7 +38,6 @@ namespace ComandInheritance.Workers
             }
 
             return Task.CompletedTask;
-
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

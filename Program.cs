@@ -1,11 +1,15 @@
-﻿using ComandInheritance.Services;
+﻿using AutoMapper;
+using ComandInheritance.AutoMapper;
+using ComandInheritance.Services;
 using ComandInheritance.Workers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
-        services.AddSingleton<ICommandService, CommandService>()
+        services
+        .AddAutoMapper(typeof(MapperProfile))
+        .AddSingleton<ICommandService, ComandoService>()
         .AddHostedService<ConsoleWorker>())
     .Build();
 
