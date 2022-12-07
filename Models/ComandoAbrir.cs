@@ -36,7 +36,7 @@ namespace ComandInheritance.Models
         {
             var palavras = NOME_PROGRAMAS
                 .Where(p => Texto.Contains(p.Key))
-                .Select(p => p.Key)
+                .Select(p => p.Value)
                 .Distinct()
                 .ToList();
             return palavras;
