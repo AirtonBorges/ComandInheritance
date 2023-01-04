@@ -1,52 +1,60 @@
 ﻿using AutoMapper;
+using ComandInheritance.Comandos;
 using ComandInheritance.Models;
 
-namespace ComandInheritance.Services
+namespace ComandInheritance.Services;
+
+public class ComandoService : ICommandService
 {
-    public class ComandoService : ICommandService
+    private readonly IMapper _mapper;
+    private readonly IServiceProvider _serviceProvider;
+
+    public ComandoService(IMapper pMapper, IServiceProvider pServiceProvider)
     {
-        private readonly IMapper _mapper;
-        private readonly IServiceProvider _serviceProvider;
+        _mapper = pMapper;
+        _serviceProvider = pServiceProvider;
+    }
 
-        public ComandoService(IMapper pMapper, IServiceProvider pServiceProvider)
+    public TComando? ObterComando<TComando>(string pArgs) where TComando : Comando
+    {
+        var xInstrucao = new Instrucao(pArgs);
+
+        try
         {
-            _mapper = pMapper;
-            _serviceProvider = pServiceProvider;
-        }
-
-        public TComando ObterComando<TComando>(string pArgs) where TComando : Comando
-        {
-            var xInstrucao = new Instrucao(pArgs);
-
             TentaAdicionarVerbo(xInstrucao);
             var xComando = _mapper.Map<Comando>(xInstrucao);
             return (TComando)xComando;
         }
-
-        private static void TentaAdicionarVerbo(Instrucao xInstrucao)
+        catch (Exception pException)
         {
-            try
-            {
-                xInstrucao.AdicionarVerbo();
-            }
-            catch (Exception xException)
-            {
-                Console.WriteLine(xException);
-            }
+            Console.WriteLine(pException);
+            return null;
         }
+    }
 
-        public async Task<bool> ExecutarComando<TComando>(TComando pComando) where TComando : Comando
+    private static void TentaAdicionarVerbo(Instrucao xInstrucao)
+    {
+        try
         {
-            var xExecutou = false;
-            try
-            {
-                xExecutou = await pComando.Executar(_serviceProvider);
-            }
-            catch (Exception xException)
-            {
-                Console.WriteLine($"Erro ao executar o comando {pComando.Texto}\n {xException}");
-            }
-            return xExecutou;
+            xInstrucao.AdicionarVerbo();
         }
+        catch (Exception xException)
+        {
+            Console.WriteLine(xException);
+        }
+    }
+
+    public async Task<bool> ExecutarComando<TComando>(TComando pComando) where TComando : Comando
+    {
+        var xExecutou = false;
+        try
+        {
+            xExecutou = await pComando.Executar(_serviceProvider);
+        }
+        catch (Exception xException)
+        {
+            Console.WriteLine($"Erro ao executar o comando {pComando.Texto}\n {xException}");
+        }
+        return xExecutou;
     }
 }

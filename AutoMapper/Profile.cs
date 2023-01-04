@@ -1,33 +1,34 @@
 ﻿using AutoMapper;
+using ComandInheritance.Comandos;
 using ComandInheritance.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ComandInheritance.AutoMapper
+namespace ComandInheritance.AutoMapper;
+
+public class MapperProfile : Profile
 {
-    public class MapperProfile : Profile
+    public MapperProfile()
     {
-        public MapperProfile()
-        {
-            ComandoMapping();
-        }
+        ComandoMapping();
+    } 
 
-        private void ComandoMapping()
-        {
-            CreateMap<Instrucao, Comando>()
-                            .ConstructUsing((p, pContext) => p.Verbo switch
-                            {
-                                Verbo.Abrir => pContext.Mapper.Map<Instrucao, ComandoAbrir>(p),
-                                _ => pContext.Mapper.Map<Instrucao, ComandoInvalido>(p),
-                            })
-                            .ForMember(p => p.Texto, p => p.MapFrom(pS => pS.Texto))
-                            .ForAllMembers(p => p.Ignore());
+    private void ComandoMapping()
+    {
+        CreateMap<Instrucao, Comando>()
+            .ConstructUsing((p, pContext) => p.Verbo switch
+            {
+                Verbo.Abrir => pContext.Mapper.Map<Instrucao, ComandoProgramaAbrir>(p),
+                Verbo.Fechar => pContext.Mapper.Map<Instrucao, ComandoProgramaFechar>(p),
+                Verbo.Matar => pContext.Mapper.Map<Instrucao, ComandoProgramaMatar>(p),
+                _ => pContext.Mapper.Map<Instrucao, ComandoInvalido>(p),
+            })
+            .ForMember(p => p.Texto, p 
+                => p.MapFrom(pS => pS.Texto))
+            ;
 
-            CreateMap<Instrucao, ComandoAbrir>();
-            CreateMap<Instrucao, ComandoInvalido>();
-        }
+        CreateMap<Instrucao, ComandoProgramaAbrir>();
+        CreateMap<Instrucao, ComandoProgramaFechar>();
+        CreateMap<Instrucao, ComandoProgramaMatar>();
+        CreateMap<Instrucao, ComandoPrograma>();
+        CreateMap<Instrucao, ComandoInvalido>();
     }
 }

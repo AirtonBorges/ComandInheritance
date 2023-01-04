@@ -1,9 +1,9 @@
 ﻿
-namespace ComandInheritance
+namespace ComandInheritance.Models;
+
+public enum Verbo
 {
-    public enum Verbo
-    {
-        Abrir,
-        Fechar
-    }
+    Abrir,
+    Fechar,
+    Matar
 }
