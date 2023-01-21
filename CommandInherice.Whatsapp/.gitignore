@@ -1,0 +1,7 @@
+git 
+tokens
+node_modules
+build
+.history
+package-lock.json
+.env
