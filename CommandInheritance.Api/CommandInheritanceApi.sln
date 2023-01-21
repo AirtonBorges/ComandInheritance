@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandInheritanceApi", "CommandInheritanceApi.csproj", "{4BE549D6-9D14-4313-863B-B1FFE5E4D0DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BE549D6-9D14-4313-863B-B1FFE5E4D0DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE549D6-9D14-4313-863B-B1FFE5E4D0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE549D6-9D14-4313-863B-B1FFE5E4D0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE549D6-9D14-4313-863B-B1FFE5E4D0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD39DB3A-6C76-46C1-8679-7F91E14EDDF8}
+	EndGlobalSection
+EndGlobal
