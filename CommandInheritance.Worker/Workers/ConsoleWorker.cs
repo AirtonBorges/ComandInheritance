@@ -1,13 +1,14 @@
 ﻿using ComandInheritance.Comandos;
 using ComandInheritance.Services;
 using Microsoft.Extensions.Hosting;
+
 namespace ComandInheritance.Workers;
 
 public class ConsoleWorker : IHostedService
 {
-    private readonly ICommandService _comandoService;
+    private readonly IComandoService _comandoService;
 
-    public ConsoleWorker(ICommandService pComandoService)
+    public ConsoleWorker(IComandoService pComandoService)
     {
         _comandoService = pComandoService;
     }

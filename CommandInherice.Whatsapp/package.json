@@ -11,6 +11,7 @@
     "venom-bot": "^4.3.7"
   },
   "dependencies": {
-    "kafkajs": "^2.2.3"
+    "kafkajs": "^2.2.3",
+    "mongodb": "^4.13.0"
   }
 }

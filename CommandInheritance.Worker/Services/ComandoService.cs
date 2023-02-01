@@ -4,7 +4,7 @@ using ComandInheritance.Models;
 
 namespace ComandInheritance.Services;
 
-public class ComandoService : ICommandService
+public class ComandoService : IComandoService
 {
     private readonly IMapper _mapper;
     private readonly IServiceProvider _serviceProvider;

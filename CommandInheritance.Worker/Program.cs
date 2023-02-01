@@ -16,12 +16,17 @@ using var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((pHost, pServices) =>
         pServices
         .Configure<Configuracao>(pHost.Configuration.GetRequiredSection(nameof(Configuracao)))
-        .AddSingleton<ICommandService, ComandoService>()
         .AddSingleton<IConfiguracao, Configuracao>(p => p
             .GetRequiredService<IOptions<Configuracao>>().Value)
         .AddSingleton(pHost.Configuration)
+
+        .AddSingleton<IComandoService, ComandoService>()
+
+        .AddHostedService<MongoInstrucoesWorker>()
+        .AddHostedService<ConsoleWorker>()
+        
         .AddAutoMapper(typeof(MapperProfile))
-        .AddHostedService<ConsoleWorker>())
+    )
     .Build();
 
 await host.RunAsync();

@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using ComandInheritance.Configurations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace ComandInheritance.Comandos;
 
