@@ -43,7 +43,7 @@ public class MongoInstrucoesWorker : IHostedService
 
     private async Task ObservarInstrucoesMongo(CancellationToken pCancellationToken)
     {
-        using var xCursor = _collection.Watch(cancellationToken: pCancellationToken);
+        using var xCursor = await _collection.WatchAsync(cancellationToken: pCancellationToken);
 
         foreach (var xChange in xCursor.ToEnumerable(cancellationToken: pCancellationToken))
         {

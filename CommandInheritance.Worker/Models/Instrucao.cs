@@ -7,14 +7,14 @@ public class Instrucao
         Texto = pTexto;
     }
 
-    public Verbo? Verbo { get; private set; }
+    public PalavrasChave? Verbo { get; private set; }
 
     public void AdicionarVerbo()
     {
         foreach(var pPalavra in Texto.Split(" "))
         {
-            Enum.TryParse(typeof(Verbo), pPalavra, true, out var xVerbo);
-            Verbo ??= (Verbo?)xVerbo;
+            Enum.TryParse(typeof(PalavrasChave), pPalavra, true, out var xVerbo);
+            Verbo ??= (PalavrasChave?)xVerbo;
         }
     }
 

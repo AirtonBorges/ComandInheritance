@@ -1,9 +1,10 @@
 ﻿
 namespace ComandInheritance.Models;
 
-public enum Verbo
+public enum PalavrasChave
 {
     Abrir,
     Fechar,
-    Matar
+    Matar,
+    Volume
 }
