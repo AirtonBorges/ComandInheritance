@@ -7,15 +7,20 @@ public class Instrucao
         Texto = pTexto;
     }
 
-    public PalavrasChave? Verbo { get; private set; }
+    public PalavrasChave PalavraChave { get; private set; }
 
     public void AdicionarVerbo()
     {
-        foreach(var pPalavra in Texto.Split(" "))
-        {
-            Enum.TryParse(typeof(PalavrasChave), pPalavra, true, out var xVerbo);
-            Verbo ??= (PalavrasChave?)xVerbo;
-        }
+        // TODO: Bem ruim isso aqui
+        var xPalavraChave = Texto.Split(" ").ToList()
+            .Select(p =>
+                {
+                    Enum.TryParse<PalavrasChave>(p, true, out var xVerbo);
+                    return xVerbo;
+                })
+            .FirstOrDefault();
+
+        PalavraChave = xPalavraChave;
     }
 
     public string Texto { get; init; }
