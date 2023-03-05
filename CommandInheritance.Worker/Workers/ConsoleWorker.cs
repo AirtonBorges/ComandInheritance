@@ -1,5 +1,4 @@
-﻿using ComandInheritance.Comandos;
-using ComandInheritance.Services;
+﻿using ComandInheritance.Services;
 using Microsoft.Extensions.Hosting;
 
 namespace ComandInheritance.Workers;
@@ -13,7 +12,7 @@ public class ConsoleWorker : IHostedService
         _comandoService = pComandoService;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -25,22 +24,17 @@ public class ConsoleWorker : IHostedService
                 if (xArgs == null)
                     continue;
 
-                var xComando = _comandoService.ObterComando<Comando>(xArgs);
-                if (xComando is null)
+                var xComando = await _comandoService.ExecutarComando(xArgs);
+                if (xComando == false)
                 {
                     Console.WriteLine("Não consegui criar um comando.");
-                    continue;
                 }
-
-                var xExecutou = _comandoService.ExecutarComando(xComando);
             }
         }
         catch ( Exception xException) 
         {
             Console.WriteLine(xException);
         }
-
-        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

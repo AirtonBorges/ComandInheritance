@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using ComandInheritance.AutoMapper;
+using ComandInheritance.Comandos;
 using ComandInheritance.Configurations;
+using ComandInheritance.Models;
 using ComandInheritance.Services;
 using ComandInheritance.Workers;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,10 @@ using var host = Host.CreateDefaultBuilder(args)
 
         .AddHostedService<MongoInstrucoesWorker>()
         .AddHostedService<ConsoleWorker>()
+
+        .AddScoped<ComandoInvalido>()
+        .AddScoped<ComandoMidia>()
+        .AddScoped<ComandoPrograma>()
         
         .AddAutoMapper(typeof(MapperProfile))
     )

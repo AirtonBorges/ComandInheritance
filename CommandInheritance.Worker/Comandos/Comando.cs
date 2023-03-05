@@ -1,10 +1,10 @@
-﻿using ComandInheritance.Models;
+﻿using ComandInheritance.AutoMapper;
+using ComandInheritance.Services;
 
 namespace ComandInheritance.Comandos;
 
-public abstract class Comando
+public abstract class Comando: IComando
 {
-    public required string Texto { get; set; }
-    public required Instrucao Instrucao { get; set; }
-    public abstract Task<bool> Executar(IServiceProvider pServiceProvider);
+    public IInstrucaoDeComando Instrucao { get; set; } // TODO: resolver nulabilidade
+    public abstract Task<bool> Executar();
 }

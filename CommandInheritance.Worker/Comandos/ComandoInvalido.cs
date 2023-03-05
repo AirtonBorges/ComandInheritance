@@ -1,10 +1,11 @@
-﻿namespace ComandInheritance.Comandos;
+﻿using ComandInheritance.Services;
 
-internal class ComandoInvalido : Comando
+namespace ComandInheritance.Comandos;
+
+public class ComandoInvalido : Comando, IComando
 {
-    public override Task<bool> Executar(IServiceProvider pServiceProvider)
+    public override Task<bool> Executar()
     {
-        Console.WriteLine($"O comando {Texto} não existe.");
-        return Task.FromResult(false);
+        throw new NotImplementedException();
     }
 }

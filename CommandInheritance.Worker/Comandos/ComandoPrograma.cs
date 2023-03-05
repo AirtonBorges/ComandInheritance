@@ -2,14 +2,21 @@
 using System.Diagnostics;
 using ComandInheritance.Configurations;
 using ComandInheritance.Models;
+using ComandInheritance.Services;
 using ExcelDataReader;
-using Microsoft.Extensions.DependencyInjection;
+
 using Microsoft.IdentityModel.Tokens;
 
 namespace ComandInheritance.Comandos;
 
-public sealed class ComandoPrograma : Comando
+public sealed class ComandoPrograma : Comando, IComando
 {
+    private readonly IConfiguracao _configuracao;
+
+    public ComandoPrograma(IConfiguracao pConfiguracao)
+    {
+        _configuracao = pConfiguracao;
+    }
     // TODO: meio mais ou menos, voltar e pensar em algo melhor
     private Dictionary<PalavrasChave, Func<Programa, bool>> Processos => new()
     {
@@ -18,12 +25,9 @@ public sealed class ComandoPrograma : Comando
         , { PalavrasChave.Matar, MatarPrograma }
     };
 
-    public override Task<bool> Executar(IServiceProvider pServiceProvider)
+    public override Task<bool> Executar()
     {
-        var xConfiguracao = pServiceProvider
-            .GetRequiredService<IConfiguracao>();
-
-        var xProgramas = ObterProgramas(xConfiguracao.CaminhoParaExcelProgramas);
+        var xProgramas = ObterProgramas(_configuracao.CaminhoParaExcelProgramas);
         var xExecutouComSucesso = !xProgramas.Any(ProcessarInstrucao);
 
         return Task.FromResult(xExecutouComSucesso);
@@ -117,7 +121,7 @@ public sealed class ComandoPrograma : Comando
         );
 
         var xProgramasFiltrados = xProgramas
-            .Where(p => p.PalavrasChave.Any(pS => Texto.Contains(pS)))
+            .Where(p => p.PalavrasChave.Any(pS => Instrucao.Texto.Contains(pS)))
             .Where(p => p.PalavrasChave.Any(pS => pS != "") )
             .Distinct()
             .ToList();

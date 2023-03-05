@@ -6,5 +6,6 @@ public enum PalavrasChave
     Abrir,
     Fechar,
     Matar,
-    Volume
+    Volume,
+    Invalido
 }
