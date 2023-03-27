@@ -1,40 +1,34 @@
-﻿using ComandInheritance.AutoMapper;
-using ComandInheritance.Comandos;
+﻿using System.Text.RegularExpressions;
+using AutoMapper;
 using ComandInheritance.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ComandInheritance.Services;
 
-public class ComandoService : IComandoService
+public partial class ComandoService : IComandoService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IMapper _mapper;
 
-    public ComandoService(IServiceProvider pServiceProvider)
+    public ComandoService(IServiceProvider pServiceProvider, IMapper pMapper)
     {
         _serviceProvider = pServiceProvider;
+        _mapper = pMapper;
     }
 
     public async Task<bool?> ExecutarComando(string pArgs)
     {
-        var xPalavraChave = ObterPalavraChave(pArgs);
-        var xInstrucao = new Instrucao
-        {
-            PalavraChave = xPalavraChave
-            , Texto = pArgs
-        };
-
-        // TODO: Fazer isso virar um autommaper
-        IInstrucaoDeComando xInstrucaoDeComando = xInstrucao.PalavraChave switch
-        {
-            PalavrasChave.Abrir => new InstrucaoDeComando<ComandoPrograma> { PalavraChave = PalavrasChave.Abrir, Texto = xInstrucao.Texto },
-            PalavrasChave.Fechar => new InstrucaoDeComando<ComandoPrograma> { PalavraChave = PalavrasChave.Fechar, Texto = xInstrucao.Texto },
-            PalavrasChave.Matar => new InstrucaoDeComando<ComandoPrograma> { PalavraChave = PalavrasChave.Matar, Texto = xInstrucao.Texto },
-            PalavrasChave.Volume => new InstrucaoDeComando<ComandoMidia> { PalavraChave = PalavrasChave.Volume, Texto = xInstrucao.Texto },
-            _ => new InstrucaoDeComando<ComandoInvalido> { PalavraChave = PalavrasChave.Invalido, Texto = xInstrucao.Texto }
-        };
-
         try
         {
+            var xPalavraChave = ObterPalavraChave(pArgs);
+            var xInstrucao = new Instrucao
+            {
+                PalavraChave = xPalavraChave
+                , Texto = pArgs
+            };
+
+            var xInstrucaoDeComando = _mapper.Map<IInstrucaoDeComando>(xInstrucao);
+
             using var xScope = _serviceProvider.CreateScope();
             var xComando = xInstrucaoDeComando.ObterComando(xScope.ServiceProvider);
             await xComando.Executar();
@@ -49,17 +43,21 @@ public class ComandoService : IComandoService
 
     private PalavrasChave ObterPalavraChave(string pArgs)
     {
-        // TODO: Bem ruim isso aqui
-        var xPalavraChave = pArgs.Split(" ").ToList()
-            .Select(p =>
-            {
-                Enum.TryParse<PalavrasChave>(p, true, out var xVerbo);
-                return xVerbo;
-            })
-            .FirstOrDefault();
+        var xMatches = MyRegex().Matches(pArgs);
+
+        var xPalavras = from m in xMatches
+            where !string.IsNullOrEmpty(m.Value)
+            select m.Value;
+
+        var xPalavraChave = PalavrasChave.Invalido;
+        if (Enum.TryParse<PalavrasChave>(xPalavras.FirstOrDefault(), true, out var xPalavra))
+            xPalavraChave = xPalavra;
 
         return xPalavraChave;
     }
+
+    [GeneratedRegex("\\b[\\w']*\\b")]
+    private static partial Regex MyRegex();
 }
 
 public interface IComando

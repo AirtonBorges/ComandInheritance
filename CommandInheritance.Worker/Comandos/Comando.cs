@@ -1,4 +1,4 @@
-﻿using ComandInheritance.AutoMapper;
+﻿using ComandInheritance.Models;
 using ComandInheritance.Services;
 
 namespace ComandInheritance.Comandos;
